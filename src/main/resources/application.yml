@@ -1,0 +1,23 @@
+server:
+  servlet:
+    context-path: /api
+  port: 8080
+
+spring:
+  application:
+    name: e-commerce
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    driver-class-name: org.postgresql.Driver
+    username: admin
+    password: admin
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+
+logging:
+  level:
+    root: INFO
+    dev.waltercrdz.api: INFO
