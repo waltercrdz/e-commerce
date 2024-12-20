@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AwsConfig {
 
-    @Value("${aws.sns.topic.arn}")
+    @Value("${aws.sns.topic-arn}")
     private String topicArn;
 
     private SnsOperations snsOperations;

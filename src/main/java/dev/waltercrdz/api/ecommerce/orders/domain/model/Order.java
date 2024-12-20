@@ -24,8 +24,20 @@ public class Order {
         return id;
     }
 
+    public UUID getCustomerId() {
+        return customerId;
+    }
+
     public List<ProductOrder> getProducts() {
         return Collections.unmodifiableList(products);
+    }
+
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
     }
 
     public static class Builder {

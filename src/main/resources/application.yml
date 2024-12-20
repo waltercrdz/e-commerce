@@ -3,20 +3,25 @@ server:
     context-path: /api
   port: 8080
 
+aws:
+  sns:
+    topic-arn: ${TOPIC_ARN}
+
 spring:
   application:
     name: e-commerce
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: ${DB_URL}
     driver-class-name: org.postgresql.Driver
-    username: admin
-    password: admin
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
   jpa:
     defer-datasource-initialization: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     open-in-view: false
-
+    properties:
+      hibernate.default_schema: ${DB_SCHEMA}
 logging:
   level:
     root: INFO

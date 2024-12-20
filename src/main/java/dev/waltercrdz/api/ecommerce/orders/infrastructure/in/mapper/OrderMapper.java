@@ -14,6 +14,7 @@ public class OrderMapper {
                 .customerId(UUID.fromString(source.customerId()))
                 .products(source.products().stream()
                         .map(product -> ProductOrder.of(
+                                UUID.randomUUID(),
                                 UUID.fromString(product.productId()),
                                 product.quantity(),
                                 product.price())

@@ -21,9 +21,4 @@ public class SnsPublisher implements EventPublisher {
         final var notification = SnsNotification.builder(event).build();
         snsOperations.sendNotification(topicArn, notification);
     }
-
-    @Override
-    public void publish(List<DomainEvent> events) {
-        events.forEach(this::publish);
-    }
 }

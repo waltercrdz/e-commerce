@@ -21,10 +21,10 @@ public class OrderCreator {
     }
 
     public void create(Order order) {
-        order.getProducts().forEach(productOrder -> {
-            this.productFinder.findById(productOrder.getProductId())
-                    .orElseThrow(ProductNotFoundException::new);
-        });
+//        order.getProducts().forEach(productOrder -> {
+//            this.productFinder.findById(productOrder.getProductId())
+//                    .orElseThrow(ProductNotFoundException::new);
+//        });
         this.writer.save(order);
         final var event = OrderCreatedDomainEvent.from(order);
         this.eventPublisher.publish(event);
