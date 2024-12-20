@@ -10,6 +10,7 @@ public class OrderMapper {
         final var products = source.getProducts().stream()
                 .map(product -> new ProductOrderEntity(
                         product.getId(),
+                        product.getProductId(),
                         product.getQuantity(),
                         product.getPrice()
                 ))
@@ -18,8 +19,7 @@ public class OrderMapper {
                 source.getId(),
                 source.getCustomerId(),
                 products,
-                source.getTotal(),
-                source.getStatus().getValue()
+                source.getStatus()
         );
     }
 }

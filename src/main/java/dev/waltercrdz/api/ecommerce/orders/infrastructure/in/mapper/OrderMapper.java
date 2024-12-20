@@ -1,6 +1,7 @@
 package dev.waltercrdz.api.ecommerce.orders.infrastructure.in.mapper;
 
 import dev.waltercrdz.api.ecommerce.orders.domain.model.Order;
+import dev.waltercrdz.api.ecommerce.orders.domain.model.OrderStatus;
 import dev.waltercrdz.api.ecommerce.orders.domain.model.ProductOrder;
 import dev.waltercrdz.api.ecommerce.orders.infrastructure.in.dto.OrderCreationRequest;
 
@@ -20,6 +21,7 @@ public class OrderMapper {
                                 product.price())
                         )
                         .toList())
+                .status(OrderStatus.PENDING)
                 .build();
     }
 }

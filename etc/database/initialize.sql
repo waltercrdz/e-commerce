@@ -5,7 +5,6 @@ CREATE TYPE orders.order_status AS ENUM ('PENDING', 'CONFIRMED', 'SHIPPED', 'DEL
 CREATE TABLE IF NOT EXISTS orders.orders (
     id          UUID PRIMARY KEY,
     customer_id UUID           NOT NULL,
-    total       NUMERIC(10, 2) NOT NULL CHECK (total >= 0),
     status      orders.order_status   NOT NULL
 );
 

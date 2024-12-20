@@ -11,20 +11,14 @@ import org.springframework.stereotype.Service;
 public class OrderCreator {
 
     private final OrderCommandRepository writer;
-    private final ProductFinder productFinder;
     private final EventPublisher eventPublisher;
 
     public OrderCreator(ProductFinder productFinder, OrderCommandRepository writer, EventPublisher eventPublisher) {
-        this.productFinder = productFinder;
         this.writer = writer;
         this.eventPublisher = eventPublisher;
     }
 
     public void create(Order order) {
-//        order.getProducts().forEach(productOrder -> {
-//            this.productFinder.findById(productOrder.getProductId())
-//                    .orElseThrow(ProductNotFoundException::new);
-//        });
         this.writer.save(order);
         final var event = OrderCreatedDomainEvent.from(order);
         this.eventPublisher.publish(event);

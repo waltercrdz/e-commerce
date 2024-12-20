@@ -5,8 +5,6 @@ import dev.waltercrdz.api.ecommerce.shared.domain.event.DomainEvent;
 import io.awspring.cloud.sns.core.SnsNotification;
 import io.awspring.cloud.sns.core.SnsOperations;
 
-import java.util.List;
-
 public class SnsPublisher implements EventPublisher {
     private final SnsOperations snsOperations;
     private final String topicArn;

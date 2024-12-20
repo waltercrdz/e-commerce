@@ -20,9 +20,12 @@ public class ProductOrderEntity {
 
     public ProductOrderEntity() {}
 
-    public ProductOrderEntity(UUID product_id,
-                              Integer quantity,
-                              BigDecimal price) {
+    public ProductOrderEntity(
+                        UUID id,
+                        UUID product_id,
+                        Integer quantity,
+                        BigDecimal price) {
+        this.id = id;
         this.productId = product_id;
         this.quantity = quantity;
         this.price = price;

@@ -2,9 +2,13 @@ package dev.waltercrdz.api.ecommerce.orders.infrastructure.out.persistence.entit
 
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
+
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.dialect.PostgreSQLEnumJdbcType;
+
+import dev.waltercrdz.api.ecommerce.orders.domain.model.OrderStatus;
 
 @Entity
 @Table(name = "orders")
@@ -19,20 +23,20 @@ public class OrderEntity {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "order_id", nullable = false)
     private List<ProductOrderEntity> products;
-    private BigDecimal total;
-    private String status;
+    
+    @Enumerated(EnumType.STRING)
+    @JdbcType(PostgreSQLEnumJdbcType.class)
+    private OrderStatus status;
 
     public OrderEntity() {}
 
     public OrderEntity(UUID id,
                        UUID customerId,
                        List<ProductOrderEntity> products,
-                       BigDecimal total,
-                       String status) {
+                       OrderStatus status) {
         this.id = id;
         this.customerId = customerId;
         this.products = products;
-        this.total = total;
         this.status = status;
     }
 }
