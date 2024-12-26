@@ -22,7 +22,7 @@ This project is a a RESTful API that provides a E-Commerce made with Java and Sp
 
 ## Prerequisites
 
-- Java 21
+- Java 21+
 - Maven
 - Docker (optional)
 

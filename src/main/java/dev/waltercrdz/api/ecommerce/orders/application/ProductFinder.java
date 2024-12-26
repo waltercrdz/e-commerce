@@ -1,7 +1,6 @@
 package dev.waltercrdz.api.ecommerce.orders.application;
 
 import dev.waltercrdz.api.ecommerce.orders.domain.model.Product;
-import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;

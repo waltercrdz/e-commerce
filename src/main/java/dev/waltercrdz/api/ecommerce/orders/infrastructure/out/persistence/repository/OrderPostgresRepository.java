@@ -1,7 +1,5 @@
 package dev.waltercrdz.api.ecommerce.orders.infrastructure.out.persistence.repository;
 
-import dev.waltercrdz.api.ecommerce.orders.domain.model.Order;
-import dev.waltercrdz.api.ecommerce.orders.domain.repository.OrderCommandRepository;
 import dev.waltercrdz.api.ecommerce.orders.infrastructure.out.persistence.entity.OrderEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
