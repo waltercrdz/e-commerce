@@ -2,6 +2,7 @@ package dev.waltercrdz.api.ecommerce.orders.infrastructure.in.controller;
 
 import dev.waltercrdz.api.ecommerce.orders.application.OrderCreator;
 import dev.waltercrdz.api.ecommerce.orders.infrastructure.in.mapper.OrderMapper;
+import jakarta.validation.Valid;
 import dev.waltercrdz.api.ecommerce.orders.infrastructure.in.dto.OrderCreationRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +22,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createOrder(@RequestBody OrderCreationRequest request) {
+    public ResponseEntity<Void> createOrder(@Valid @RequestBody OrderCreationRequest request) {
         final var orderToCreate = OrderMapper.from(request, UUID.randomUUID());
         this.createOrder.create(orderToCreate);
         return ResponseEntity.ok().build();

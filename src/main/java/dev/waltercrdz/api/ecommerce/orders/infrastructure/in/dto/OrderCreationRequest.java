@@ -2,4 +2,10 @@ package dev.waltercrdz.api.ecommerce.orders.infrastructure.in.dto;
 
 import java.util.List;
 
-public record OrderCreationRequest(String customerId, List<ProductOrderRequest> products) {}
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+
+public record OrderCreationRequest(
+    @NotBlank String customerId, 
+    @NotEmpty List<@Valid ProductOrderRequest> products) {}
