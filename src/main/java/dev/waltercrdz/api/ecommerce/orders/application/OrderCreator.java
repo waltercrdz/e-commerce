@@ -11,6 +11,7 @@ import dev.waltercrdz.api.ecommerce.orders.domain.event.OrderCreatedDomainEvent;
 import java.util.Objects;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class OrderCreator {
@@ -25,6 +26,7 @@ public class OrderCreator {
         this.eventPublisher = eventPublisher;
     }
 
+    @Transactional
     public void create(Order order) {
         checkArgument(Objects.nonNull(order), "Order cannot be null");
 
