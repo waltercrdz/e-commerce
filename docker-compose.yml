@@ -2,13 +2,36 @@ version: '3.8'
 
 services:
   ecommerce:
-    image: openjdk:21-jdk
+    build: .
     container_name: ecommerce
     ports:
       - "8080:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=prod
+      SPRING_PROFILES_ACTIVE: prod
+      TOPIC_ARN: arn:aws:sns:us-east-1:597088021509:order-events
+      DB_URL: jdbc:postgresql://host.docker.internal:5432/ecommerce
+      DB_USER: ecommerce
+      DB_PASSWORD: password123
+      DB_SCHEMA: orders
+      AWS_REGION: us-east-1
     volumes:
-      - .:/app
-    working_dir: /app
-    command: ["mvn", "spring-boot:run"]
+      - ~/.aws/:/root/.aws:ro
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: ecommerce
+      POSTGRES_USER: ecommerce
+      POSTGRES_PASSWORD: password123
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./etc/database:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ecommerce" ]
+      interval: 5s
+      timeout: 4s
+      retries: 5

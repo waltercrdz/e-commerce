@@ -3,20 +3,33 @@ server:
     context-path: /api
   port: 8080
 
+aws:
+  sns:
+    topic-arn: ${TOPIC_ARN}
+
 spring:
   application:
     name: e-commerce
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: ${DB_URL}
     driver-class-name: org.postgresql.Driver
-    username: admin
-    password: admin
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 10
+      idle-timeout: 600000  # 10 minutes
+      max-lifetime: 1800000  # 30 minutes
+      connection-timeout: 30000  # 30 seconds
+      validation-timeout: 5000  # 5 seconds
+      leak-detection-threshold: 2000  # 2 seconds
+      connection-test-query: SELECT 1
   jpa:
     defer-datasource-initialization: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     open-in-view: false
-
+    properties:
+      hibernate.default_schema: ${DB_SCHEMA}
 logging:
   level:
     root: INFO
