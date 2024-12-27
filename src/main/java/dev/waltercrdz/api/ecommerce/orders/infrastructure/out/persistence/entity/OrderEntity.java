@@ -11,7 +11,7 @@ import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 import dev.waltercrdz.api.ecommerce.orders.domain.model.OrderStatus;
 
 @Entity
-@Table(name = "orders")
+@Table(name = "orders", schema = "orders")
 public class OrderEntity {
 
     @Id

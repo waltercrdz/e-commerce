@@ -1,4 +1,4 @@
-package dev.waltercrdz.api.ecommerce.orders.domain.exception;
+package dev.waltercrdz.api.ecommerce.shared.domain.exception;
 
 public class DatabaseConnectionException extends DomainException {
 

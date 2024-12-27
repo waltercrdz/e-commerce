@@ -1,7 +1,5 @@
 package dev.waltercrdz.api.ecommerce.orders.infrastructure.in.error;
 
-import dev.waltercrdz.api.ecommerce.orders.domain.exception.DatabaseConnectionException;
-import dev.waltercrdz.api.ecommerce.orders.domain.exception.ErrorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -9,6 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import dev.waltercrdz.api.ecommerce.shared.domain.exception.DatabaseConnectionException;
+import dev.waltercrdz.api.ecommerce.shared.domain.exception.ErrorCode;
+import dev.waltercrdz.api.ecommerce.shared.domain.exception.NotEnoughStockException;
+import dev.waltercrdz.api.ecommerce.shared.domain.exception.ProductNotFoundException;
 
 @ControllerAdvice
 public class ErrorHandler {
@@ -36,6 +39,22 @@ public class ErrorHandler {
         LOGGER.error("Database connection: ", e);
         return ResponseEntity
                 .status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body(ApiError.fromDomainException(e));
+    }
+    
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<ApiError> handleProductNotFoundException(ProductNotFoundException e) {
+        LOGGER.error("Product Not Found: ", e);
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ApiError.fromDomainException(e));
+    }
+    
+    @ExceptionHandler(NotEnoughStockException.class)
+    public ResponseEntity<ApiError> handleNotEnoughStockException(NotEnoughStockException e) {
+        LOGGER.error("Insufficient Stock: ", e);
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
                 .body(ApiError.fromDomainException(e));
     }
 

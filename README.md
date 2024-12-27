@@ -9,6 +9,7 @@ This project is a a RESTful API that provides a E-Commerce made with Java and Sp
 ## To Do
 
 - Order Read
+- Payment Creation
 - Order Status Update
 - Event-Driven Order Status Changes
 

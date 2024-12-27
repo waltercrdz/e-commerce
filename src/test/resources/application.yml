@@ -1,0 +1,32 @@
+server:
+  servlet:
+    context-path: /api
+  port: 8080
+
+aws:
+  sns:
+    topic-arn: arn:aws:sns:us-east-1:000000000000:order-events
+    endpoint: http://localhost:4566
+    region: us-east-1
+
+spring:
+  application:
+    name: e-commerce
+  datasource:
+    url: jdbc:tc:postgresql:///testdb
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+      data-locations: classpath:data.sql
+    
+logging:
+  level:
+    root: INFO
+    dev.waltercrdz.api: INFO

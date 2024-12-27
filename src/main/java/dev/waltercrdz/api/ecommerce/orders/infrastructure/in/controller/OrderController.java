@@ -4,6 +4,9 @@ import dev.waltercrdz.api.ecommerce.orders.application.OrderCreator;
 import dev.waltercrdz.api.ecommerce.orders.infrastructure.in.mapper.OrderMapper;
 import jakarta.validation.Valid;
 import dev.waltercrdz.api.ecommerce.orders.infrastructure.in.dto.OrderCreationRequest;
+import dev.waltercrdz.api.ecommerce.orders.infrastructure.in.dto.OrderCreationResponse;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,15 +19,17 @@ import java.util.UUID;
 @RequestMapping("/orders")
 public class OrderController {
 
-    private final OrderCreator createOrder;
+    private final OrderCreator orderCreator;
+
     public OrderController(OrderCreator createOrder) {
-        this.createOrder = createOrder;
+        this.orderCreator = createOrder;
     }
 
     @PostMapping
-    public ResponseEntity<Void> createOrder(@Valid @RequestBody OrderCreationRequest request) {
-        final var orderToCreate = OrderMapper.from(request, UUID.randomUUID());
-        this.createOrder.create(orderToCreate);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<OrderCreationResponse> createOrder(@Valid @RequestBody OrderCreationRequest request) {
+        final var orderToCreate = OrderMapper.toDomain(request, UUID.randomUUID());
+        orderCreator.create(orderToCreate);
+        final var response = OrderMapper.toResponse(orderToCreate);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

@@ -4,12 +4,13 @@ import dev.waltercrdz.api.ecommerce.orders.domain.model.Order;
 import dev.waltercrdz.api.ecommerce.orders.domain.model.OrderStatus;
 import dev.waltercrdz.api.ecommerce.orders.domain.model.ProductOrder;
 import dev.waltercrdz.api.ecommerce.orders.infrastructure.in.dto.OrderCreationRequest;
+import dev.waltercrdz.api.ecommerce.orders.infrastructure.in.dto.OrderCreationResponse;
 
 import java.util.UUID;
 
 public class OrderMapper {
 
-    public static Order from(OrderCreationRequest source, UUID orderId) {
+    public static Order toDomain(OrderCreationRequest source, UUID orderId) {
         return new Order.Builder()
                 .id(orderId)
                 .customerId(UUID.fromString(source.customerId()))
@@ -23,5 +24,9 @@ public class OrderMapper {
                         .toList())
                 .status(OrderStatus.PENDING)
                 .build();
+    }
+
+    public static OrderCreationResponse toResponse(Order source) {
+        return new OrderCreationResponse(source.getId(), source.getStatus().name());
     }
 }

@@ -17,7 +17,7 @@ public class OrderRepositoryDefault implements OrderCommandRepository {
     @Override
     public void save(Order order) {
         final var orderEntity = OrderMapper.toEntity(order);
-        this.orderPostgresRepository.save(orderEntity);
+        orderPostgresRepository.save(orderEntity);
     }
 
 }
