@@ -1,7 +1,7 @@
-.PHONY: build test docker-build docker-push
+.PHONY: build test
 
 build:
-    ./mvnw clean package -DskipTests
+	./mvnw clean package -DskipTests
 
 test:
-    ./mvnw test
+	./mvnw test
