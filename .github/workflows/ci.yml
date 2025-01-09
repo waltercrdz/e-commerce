@@ -1,4 +1,4 @@
-name: E-commerce CI/CD
+name: CI Workflow
 
 on: [push]
 
