@@ -33,34 +33,44 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
 
-      - name: Build and Tag Docker Image
+      - name: Extract Version
+        id: extract-version
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/myapp:${{ github.sha }} .
-          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/myapp:${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout')
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Log Extracted Version
+        run: |
+          echo "Extracted Version: ${{ env.VERSION }}"
+
+    #   - name: Build and Tag Docker Image
+    #     run: |
+    #       docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/e-commerce:${{ github.sha }} .
+    #       docker tag ${{ secrets.DOCKERHUB_USERNAME }}/e-commerce:${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/e-commerce:latest
   
-      - name: Push Docker Image to Docker Hub
-        run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/myapp:${{ github.sha }}
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
+    #   - name: Push Docker Image to Docker Hub
+    #     run: |
+    #       docker push ${{ secrets.DOCKERHUB_USERNAME }}/e-commerce:${{ github.sha }}
+    #       docker push ${{ secrets.DOCKERHUB_USERNAME }}/e-commerce:latest
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+    #   - name: Configure AWS Credentials
+    #     uses: aws-actions/configure-aws-credentials@v4
+    #     with:
+    #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    #       aws-region: us-east-1
 
-      - name: Deploy to EC2 via SSM
-        run: |
-          aws ssm send-command \
-            --document-name "AWS-RunShellScript" \
-            --targets "Key=instanceIds,Values=${{ secrets.EC2_INSTANCE_ID }}" \
-            --parameters 'commands=[
-              "docker pull ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest",
-              "docker stop myapp || true",
-              "docker rm myapp || true",
-              "docker run -d --name myapp -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest"
-            ]' \
-            --timeout-seconds 600 \
-            --comment "Deploying latest Docker image to EC2" \
-            --output text
+    #   - name: Deploy to EC2 via SSM
+    #     run: |
+    #       aws ssm send-command \
+    #         --document-name "AWS-RunShellScript" \
+    #         --targets "Key=instanceIds,Values=${{ secrets.EC2_INSTANCE_ID }}" \
+    #         --parameters 'commands=[
+    #           "docker pull ${{ secrets.DOCKERHUB_USERNAME }}/e-commerce:latest",
+    #           "docker stop e-commerce || true",
+    #           "docker rm e-commerce || true",
+    #           "docker run -d --name e-commerce -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/e-commerce:latest"
+    #         ]' \
+    #         --timeout-seconds 600 \
+    #         --comment "Deploying latest Docker image to EC2" \
+    #         --output text
