@@ -1,6 +1,12 @@
 name: CI Workflow
 
-on: [push]
+on:
+  push:
+    branches:
+      - '**'
+    paths:
+      - 'src/**'
+      - '.github/workflows/**'
 
 jobs:
   build-and-test:
@@ -25,3 +31,10 @@ jobs:
 
       - name: Run tests
         run: make test
+      
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: target/surefire-reports/
