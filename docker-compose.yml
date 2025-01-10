@@ -6,14 +6,8 @@ services:
     container_name: ecommerce
     ports:
       - "8080:8080"
-    environment:
-      SPRING_PROFILES_ACTIVE: prod
-      TOPIC_ARN: arn:aws:sns:us-east-1:597088021509:order-events
-      DB_URL: jdbc:postgresql://host.docker.internal:5432/ecommerce
-      DB_USER: ecommerce
-      DB_PASSWORD: password123
-      DB_SCHEMA: orders
-      AWS_REGION: us-east-1
+    env_file:
+      - etc/.env
     volumes:
       - ~/.aws/:/root/.aws:ro
     depends_on:
@@ -21,7 +15,7 @@ services:
         condition: service_healthy
 
   db:
-    image: postgres:latest
+    image: postgres:16.6-alpine3.21
     environment:
       POSTGRES_DB: ecommerce
       POSTGRES_USER: ecommerce
