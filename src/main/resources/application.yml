@@ -17,11 +17,11 @@ spring:
     password: ${DB_PASSWORD}
     hikari:
       maximum-pool-size: 10
-      idle-timeout: 600000  # 10 minutes
-      max-lifetime: 1800000  # 30 minutes
-      connection-timeout: 30000  # 30 seconds
-      validation-timeout: 5000  # 5 seconds
-      leak-detection-threshold: 2000  # 2 seconds
+      leak-detection-threshold: 2000
+      pool-name: HikariPool
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
       connection-test-query: SELECT 1
   jpa:
     defer-datasource-initialization: true
@@ -34,3 +34,5 @@ logging:
   level:
     root: INFO
     dev.waltercrdz.api: INFO
+    com.zaxxer.hikari: DEBUG
+    org.hibernate: DEBUG
