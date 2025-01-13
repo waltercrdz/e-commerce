@@ -12,6 +12,7 @@ import dev.waltercrdz.api.ecommerce.shared.domain.exception.DatabaseConnectionEx
 import dev.waltercrdz.api.ecommerce.shared.domain.exception.ErrorCode;
 import dev.waltercrdz.api.ecommerce.shared.domain.exception.NotEnoughStockException;
 import dev.waltercrdz.api.ecommerce.shared.domain.exception.ProductNotFoundException;
+import dev.waltercrdz.api.ecommerce.shared.infrastructure.in.error.ApiError;
 
 @ControllerAdvice
 public class ErrorHandler {

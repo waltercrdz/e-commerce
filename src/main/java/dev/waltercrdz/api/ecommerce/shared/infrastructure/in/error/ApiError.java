@@ -1,4 +1,4 @@
-package dev.waltercrdz.api.ecommerce.orders.infrastructure.in.error;
+package dev.waltercrdz.api.ecommerce.shared.infrastructure.in.error;
 
 import dev.waltercrdz.api.ecommerce.shared.domain.exception.DomainException;
 import dev.waltercrdz.api.ecommerce.shared.domain.exception.ErrorCode;
