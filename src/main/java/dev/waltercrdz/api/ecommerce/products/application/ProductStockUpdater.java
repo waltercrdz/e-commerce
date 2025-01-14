@@ -5,20 +5,20 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import dev.waltercrdz.api.ecommerce.products.domain.repository.ProductCommandRepository;
-import dev.waltercrdz.api.ecommerce.shared.domain.exception.ProductNotFoundException;
 
 @Service
 public class ProductStockUpdater {
 
+    private final ProductFinder finder;
     private final ProductCommandRepository writer;
 
-    public ProductStockUpdater(ProductCommandRepository writer) {
+    public ProductStockUpdater(ProductFinder finder, ProductCommandRepository writer) {
+        this.finder = finder;
         this.writer = writer;
     }
 
     public void updateStock(UUID productId, Integer quantity) {
-        final var product = this.writer.findById(productId)
-                                    .orElseThrow(() -> new ProductNotFoundException("Product not found", productId));
+        final var product = finder.find(productId);
         product.decreaseStock(quantity);
         this.writer.save(product);
     }
