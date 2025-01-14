@@ -7,6 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import dev.waltercrdz.api.ecommerce.shared.domain.exception.DatabaseConnectionException;
 import dev.waltercrdz.api.ecommerce.shared.domain.exception.ErrorCode;
@@ -20,43 +24,58 @@ public class ErrorHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(ErrorHandler.class);
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ApiError> handleIllegalArgumentException(IllegalArgumentException e) {
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ApiError handleIllegalArgumentException(IllegalArgumentException e) {
         LOGGER.error("Illegal argument: ", e);
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(ApiError.fromException(ErrorCode.ILLEGAL_ARGUMENT, e));
+        return ApiError.fromException(ErrorCode.ILLEGAL_ARGUMENT, e);
     }
     
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiError> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ApiError handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         LOGGER.error("Argument Not Valid: ", e);
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(ApiError.fromException(ErrorCode.ILLEGAL_ARGUMENT, e));
+        return ApiError.fromException(ErrorCode.ILLEGAL_ARGUMENT, e);
+    }
+    
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ApiError handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+        LOGGER.error("Argument Not Valid: ", e);
+        return ApiError.fromException(ErrorCode.ILLEGAL_ARGUMENT, e);
     }
 
     @ExceptionHandler(DatabaseConnectionException.class)
-    public ResponseEntity<ApiError> handleDatabaseConnectionException(DatabaseConnectionException e) {
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    @ResponseBody
+    public ApiError handleDatabaseConnectionException(DatabaseConnectionException e) {
         LOGGER.error("Database connection: ", e);
-        return ResponseEntity
-                .status(HttpStatus.SERVICE_UNAVAILABLE)
-                .body(ApiError.fromDomainException(e));
+        return ApiError.fromDomainException(e);
     }
     
     @ExceptionHandler(ProductNotFoundException.class)
-    public ResponseEntity<ApiError> handleProductNotFoundException(ProductNotFoundException e) {
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ApiError handleProductNotFoundException(ProductNotFoundException e) {
         LOGGER.error("Product Not Found: ", e);
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(ApiError.fromDomainException(e));
+        return ApiError.fromDomainException(e);
     }
     
     @ExceptionHandler(NotEnoughStockException.class)
-    public ResponseEntity<ApiError> handleNotEnoughStockException(NotEnoughStockException e) {
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseBody
+    public ApiError handleNotEnoughStockException(NotEnoughStockException e) {
         LOGGER.error("Insufficient Stock: ", e);
-        return ResponseEntity
-                .status(HttpStatus.CONFLICT)
-                .body(ApiError.fromDomainException(e));
+        return ApiError.fromDomainException(e);
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ApiError handleNoHandlerFoundException(NoHandlerFoundException e) {
+        return ApiError.fromException(ErrorCode.NOT_FOUND, e);
     }
 
     @ExceptionHandler(Exception.class)

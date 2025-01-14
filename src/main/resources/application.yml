@@ -10,6 +10,9 @@ aws:
 spring:
   application:
     name: e-commerce
+  web:
+    resources:
+      add-mappings: false
   datasource:
     url: ${DB_URL}
     driver-class-name: org.postgresql.Driver
